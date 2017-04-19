@@ -20,4 +20,16 @@ describe('api', function() {
       expect(response.body.version).toEqual(1)
     })
   });
+
+  it("allows creating a user", function () {
+    return api.post('/users', {
+      body: {
+        id: 'nope',
+        good: 'great',
+        cool: 'nice'
+      }
+    }).then((response) => {
+      expect(response.statusCode).toEqual(201)
+    })
+  });
 })

@@ -22,23 +22,15 @@ module.exports = [{
   "TableName": config.rankingsTableName,
   "AttributeDefinitions":[
     {
-      "AttributeName":"userId",
-      "AttributeType":"S"
-    },
-    {
-      "AttributeName":"rankedId",
+      "AttributeName":"id",
       "AttributeType":"S"
     },
   ],
   "KeySchema":[
     {
-      "AttributeName":"userId",
+      "AttributeName":"id",
       "KeyType":"HASH",
     },
-    {
-      "AttributeName":"rankedId",
-      "KeyType":"RANGE",
-    }
   ],
   "ProvisionedThroughput": {
     "ReadCapacityUnits":1,

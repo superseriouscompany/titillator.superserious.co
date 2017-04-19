@@ -4,7 +4,8 @@ const api    = require('./api')
 
 describe('api', function() {
   let serverHandle;
-  this.slow(1000)
+  this.slow(10000)
+  this.timeout(20000)
 
   before(function() {
     serverHandle = server(4200)
@@ -30,6 +31,21 @@ describe('api', function() {
       }
     }).then((response) => {
       expect(response.statusCode).toEqual(201)
+      expect(response.body.access_token).toExist()
+    })
+  });
+
+  it("allows submitting rankings", function () {
+    return api.post('/rankings', {
+      body: {
+        ladder: [
+          [37, 0, 29],
+          [36, 1, 70],
+          [36, 1, 40],
+        ]
+      }
+    }).then((response) => {
+      expect(response.statusCode).toEqual(204)
     })
   });
 })

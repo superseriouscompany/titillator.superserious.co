@@ -4,8 +4,10 @@ const secrets     = require('./secrets');
 let environment = process.env.NODE_ENV || 'development';
 
 module.exports = Object.assign({
-  baseUrl:                 'https://superserious.ngrok.io',
-  awsRegion:               'eu-west-1',
+  baseUrl:           'https://superserious.ngrok.io',
+  awsRegion:         'eu-west-1',
+  usersTableName:    'titillatorUsersStaging',
+  rankingsTableName: 'titillatorRankingsStaging',
 }, require(`./${environment}`));
 
 AWS.config.update({

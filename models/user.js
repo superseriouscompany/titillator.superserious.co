@@ -1,3 +1,4 @@
+const uuid      = require('uuid')
 const client    = require('../db/client')
 const tableName = require('../config').usersTableName
 
@@ -17,8 +18,12 @@ function get(id) {
 }
 
 function create(user) {
+  user = Object.assign({}, user, {access_token: uuid.v1()})
+
   return client.put({
     TableName: tableName,
     Item: user,
-  }).then(() => { return true })
+  }).then(() => {
+    return user
+  })
 }

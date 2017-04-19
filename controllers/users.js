@@ -7,7 +7,7 @@ module.exports = function(app) {
 }
 
 function createUser(req, res, next) {
-  models.user.create(req.body).then(() => {
-    res.status(201).json({created: true})
+  models.user.create(req.body).then((user) => {
+    res.status(201).json({access_token: user.access_token, user: user})
   }).catch(next)
 }

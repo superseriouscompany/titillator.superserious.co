@@ -1,6 +1,7 @@
-const expect = require('expect')
-const server = require('../index')
-const api    = require('./api')
+const expect  = require('expect')
+const server  = require('../index')
+const api     = require('./api')
+const factory = require('./factory')
 
 describe('api', function() {
   let serverHandle;
@@ -47,6 +48,14 @@ describe('api', function() {
     })
   });
 
-  it("allows submitting rankings", function () {
+  it("allows getting coworkers", function () {
+    return factory.user().then((response) => {
+      return api.get('/coworkers', {
+        headers: { 'X-Access-Token': response.body.access_token },
+      }).then((response) => {
+        expect(response.statusCode).toEqual(200)
+        expect(response.body.users.length).toBeGreaterThan(10)
+      })
+    })
   });
 })

@@ -17,9 +17,11 @@ function createUser(req, res, next) {
 }
 
 function coworkers(req, res, next) {
-  return res.json({
-    users: people
-  })
+  models.user.findCoworkers(req.user, people).then((coworkers) => {
+    return res.json({
+      users: coworkers
+    })
+  }).catch(next)
 }
 
 

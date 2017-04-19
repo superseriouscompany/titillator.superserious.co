@@ -22,7 +22,7 @@ describe('api', function() {
     })
   });
 
-  it("allows creating a user", function () {
+  it("allows creating a user and rankings", function () {
     return api.post('/users', {
       body: {
         id: 'nope',
@@ -32,20 +32,21 @@ describe('api', function() {
     }).then((response) => {
       expect(response.statusCode).toEqual(201)
       expect(response.body.access_token).toExist()
+      return api.post('/rankings', {
+        headers: { 'X-Access-Token': response.body.access_token },
+        body: {
+          ladder: [
+            [37, 0, 29],
+            [36, 1, 70],
+            [36, 1, 40],
+          ]
+        }
+      }).then((response) => {
+        expect(response.statusCode).toEqual(204)
+      })
     })
   });
 
   it("allows submitting rankings", function () {
-    return api.post('/rankings', {
-      body: {
-        ladder: [
-          [37, 0, 29],
-          [36, 1, 70],
-          [36, 1, 40],
-        ]
-      }
-    }).then((response) => {
-      expect(response.statusCode).toEqual(204)
-    })
   });
 })

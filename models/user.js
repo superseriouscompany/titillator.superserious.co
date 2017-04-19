@@ -3,8 +3,9 @@ const client    = require('../db/client')
 const tableName = require('../config').usersTableName
 
 module.exports = {
-  get:    get,
-  create: create,
+  get:               get,
+  create:            create,
+  findByAccessToken: findByAccessToken,
 }
 
 function get(id) {
@@ -25,5 +26,22 @@ function create(user) {
     Item: user,
   }).then(() => {
     return user
+  })
+}
+
+
+function findByAccessToken(accessToken) {
+  if( !accessToken ) { return Promise.reject(new Error('InputError')) }
+  return client.query({
+    TableName: tableName,
+    IndexName: 'access_token',
+    KeyConditionExpression: 'access_token = :access_token',
+    ExpressionAttributeValues: {
+      ':access_token': accessToken
+    },
+    Limit: 1,
+  }).then(function(user) {
+    if( !user.Items.length ) { throw new Error('UserNotFound'); }
+    return user.Items[0];
   })
 }

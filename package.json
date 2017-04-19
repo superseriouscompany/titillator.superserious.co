@@ -21,9 +21,13 @@
   },
   "homepage": "https://github.com/superseriouscompany/titillator.superserious.co#readme",
   "dependencies": {
+    "body-parser": "^1.17.1",
     "express": "^4.15.2"
   },
   "devDependencies": {
-    "mocha": "^3.2.0"
+    "expect": "^1.20.2",
+    "mocha": "^3.2.0",
+    "request": "^2.81.0",
+    "request-promise": "^4.2.0"
   }
 }

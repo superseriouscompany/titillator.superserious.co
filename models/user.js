@@ -1,4 +1,5 @@
 const uuid      = require('uuid')
+const crc32     = require('crc32')
 const client    = require('../db/client')
 const tableName = require('../config').usersTableName
 const _         = require('lodash')
@@ -22,7 +23,11 @@ function get(id) {
 }
 
 function create(user) {
-  user = Object.assign({}, user, {access_token: uuid.v1()})
+  user = Object.assign({}, user, {
+    access_token: uuid.v1(),
+    linkedinId:   user.id,
+    id:           crc32(user.publicProfileUrl),
+  })
 
   return client.put({
     TableName: tableName,
@@ -78,6 +83,7 @@ function isEmployee(user) {
   }
 
   return !!employees.find((e) => {
+    return e.id === user.id
     return e.id === user.id || e.publicProfileUrl === user.publicProfileUrl ||
       (e.name.match(user.firstName) && e.name.match(user.lastName))
   })

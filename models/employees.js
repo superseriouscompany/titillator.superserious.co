@@ -239,15 +239,15 @@ const csv = [
 ]
 
 const people = csv.map((str, i) => {
-  const fields = str.split(',')
-  const avatarUrl = fields[2] && fields[2].replace('shrink_100_100', 'shrinknp_400_400')
+  const fields     = str.split(',')
+  const avatarUrl  = fields[2] && fields[2].replace('shrink_100_100', 'shrinknp_400_400')
   const profileUrl = fields[3] && fields[3].replace(/\/$/, '')
   return {
-    id:         crc32(profileUrl),
-    linkedinId: i,
-    name:       fields[0],
-    gender:     fields[1],
-    avatar_url: avatarUrl || "https://static.licdn.com/scds/common/u/images/themes/katy/ghosts/person/ghost_person_200x200_v1.png",
+    id:               crc32(profileUrl),
+    linkedinId:       i,
+    name:             fields[0],
+    gender:           fields[1],
+    avatar_url:       avatarUrl || "https://static.licdn.com/scds/common/u/images/themes/katy/ghosts/person/ghost_person_200x200_v1.png",
     publicProfileUrl: profileUrl,
   }
 })

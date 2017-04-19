@@ -8,7 +8,7 @@ module.exports = function(app) {
 }
 
 function createRanking(req, res, next) {
-  models.ranking.create('nope', req.body.ladder).then(() => {
+  models.ranking.create(req.user.id, req.body.ladder).then(() => {
     res.sendStatus(204)
   }).catch(next)
 }

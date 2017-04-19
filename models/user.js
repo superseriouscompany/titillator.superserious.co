@@ -23,15 +23,25 @@ function get(id) {
 }
 
 function create(user) {
+  const id = crc32(user.publicProfileUrl);
   user = Object.assign({}, user, {
     access_token: uuid.v1(),
     linkedinId:   user.id,
-    id:           crc32(user.publicProfileUrl),
+    id:           id,
   })
 
-  return client.put({
-    TableName: tableName,
-    Item: user,
+  return get(id).catch((err) => {
+    if( err.message === 'UserNotFound' ) return
+    throw err
+  }).then((conflict) => {
+    if( conflict && conflict.linkedinId !== user.linkedinId ) {
+      throw new Error('UserConflict')
+    }
+    console.log('found a match', conflict, user)
+    return client.put({
+      TableName: tableName,
+      Item: user,
+    })
   }).then(() => {
     return user
   })
@@ -66,7 +76,19 @@ function findCoworkers(user, prepop) {
       return !!_.intersectionBy(positions, theirPositions, 'id').length
     })
   }).then((coworkers) => {
-    if( !isEmployee(user) ) {
+    return coworkers.map((c) => {
+      const avatarUrl = (c.pictureUrls && c.pictureUrls.values && c.pictureUrls.values[0]) || c.pictureUrl
+
+      return {
+        id: c.id,
+        avatarUrl: avatarUrl,
+        publicProfileUrl: c.publicProfileUrl,
+        name: `${c.firstName} ${c.lastName}`,
+        gender: c.gender,
+      }
+    })
+  }).then((coworkers) => {
+    if( !isEmployee(user) || true ) {
       return coworkers
     }
 

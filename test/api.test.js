@@ -2,6 +2,7 @@ const expect  = require('expect')
 const server  = require('../index')
 const api     = require('./api')
 const factory = require('./factory')
+const h       = require('./helpers')
 
 describe('api', function() {
   let serverHandle;
@@ -56,6 +57,14 @@ describe('api', function() {
         expect(response.statusCode).toEqual(200)
         expect(response.body.users.length).toBeGreaterThan(10)
       })
+    })
+  });
+
+  it("doesn't allow getting an access token for an existing user", function () {
+    return factory.user({id: 'cool', publicProfileUrl: 'http://cool/nice'}).then(() => {
+      return factory.user({id: 'nope', publicProfileUrl: 'http://cool/nice'})
+    }).then(h.shouldFail).catch((err) => {
+      expect(err.statusCode).toEqual(500)
     })
   });
 })

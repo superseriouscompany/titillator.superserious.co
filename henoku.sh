@@ -12,6 +12,16 @@ LETSENCRYPT_EMAIL=superseriousneil@gmail.com
 username="$(whoami)"
 
 # TODO: use digitalocean/aws api and cloudflare api to create the host
+# gcloud compute --project "super-serious-company" instances create "titillator-production" --zone "europe-west1-c" --machine-type "f1-micro" --subnet "default" --maintenance-policy "MIGRATE" --service-account "549749290464-compute@developer.gserviceaccount.com" --scopes "https://www.googleapis.com/auth/devstorage.read_only","https://www.googleapis.com/auth/logging.write","https://www.googleapis.com/auth/monitoring.write","https://www.googleapis.com/auth/servicecontrol","https://www.googleapis.com/auth/service.management.readonly","https://www.googleapis.com/auth/trace.append" --tags "http-server","https-server" --image "ubuntu-1604-xenial-v20170330" --image-project "ubuntu-os-cloud" --boot-disk-size "10" --boot-disk-type "pd-standard" --boot-disk-device-name "titillator-production"
+# gcloud compute --project "super-serious-company" firewall-rules create "default-allow-http" --allow tcp:80 --network "default" --source-ranges "0.0.0.0/0" --target-tags "http-server"
+# gcloud compute --project "super-serious-company" firewall-rules create "default-allow-https" --allow tcp:443 --network "default" --source-ranges "0.0.0.0/0" --target-tags "https-server"
+
+# wait for server to be up
+# curl -X POST "https://api.cloudflare.com/client/v4/zones/023e105f4ecef8ad9ca31a8372d0c353/dns_records" \
+#      -H "X-Auth-Email: user@example.com" \
+#      -H "X-Auth-Key: c2547eb745079dac9320b638f5e225cf483cc5cfdda41" \
+#      -H "Content-Type: application/json" \
+#      --data '{"type":"A","name":"example.com","content":"127.0.0.1","ttl":120,"proxied":false}'
 
 # Setup server
 echo "Updating apt-get..."
@@ -145,4 +155,7 @@ WantedBy=multi-user.target" | ssh "$ROOT"@"$HOST" "sudo tee /etc/systemd/system/
 
 ssh "$ROOT"@"$HOST" sudo systemctl enable app
 
-echo "ssh://git@$HOST:/${REPO_NAME}.git"
+git remote add gcloud "ssh://git@$HOST:/${REPO_NAME}.git"
+
+echo "To deploy: "
+echo "git push gcloud master"

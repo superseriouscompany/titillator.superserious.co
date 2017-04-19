@@ -2,6 +2,7 @@ const uuid      = require('uuid')
 const client    = require('../db/client')
 const tableName = require('../config').usersTableName
 const _         = require('lodash')
+const employees = require('./employees')
 
 module.exports = {
   get:               get,
@@ -53,15 +54,32 @@ function findCoworkers(user, prepop) {
   return client.scan({
     TableName: tableName,
   }).then((payload) => {
-    console.log(payload.Items)
     return payload.Items.filter((p) => {
       if( p.id === user.id ) { return false }
       if( !p.positions || !p.positions.values ) { return false}
       const theirPositions = _.map(p.positions.values, 'company')
-      console.log(_.map(positions, 'id'), _.map(theirPositions, 'id'))//,a[positions)
       return !!_.intersectionBy(positions, theirPositions, 'id').length
     })
   }).then((coworkers) => {
-    return coworkers
+    if( !isEmployee(user) ) {
+      return coworkers
+    }
+
+    return _.uniqBy(coworkers.concat(employees), 'id')
   })
+}
+
+
+function isEmployee(user) {
+  if( user.positions && user.positions.values.find((p) => {
+    return p.company.id === 3517767
+  })) {
+    return true
+  }
+
+  return !!employees.find((e) => {
+    return e.id === user.id || e.publicProfileUrl === user.publicProfileUrl ||
+      (e.name.match(user.firstName) && e.name.match(user.lastName))
+  })
+  return false
 }

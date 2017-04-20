@@ -37,7 +37,6 @@ function create(user) {
     if( conflict && conflict.linkedinId !== user.linkedinId ) {
       throw new Error('UserConflict')
     }
-    console.log('found a match', conflict, user)
     return client.put({
       TableName: tableName,
       Item: user,

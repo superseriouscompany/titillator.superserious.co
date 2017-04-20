@@ -247,7 +247,7 @@ const people = csv.map((str, i) => {
     linkedinId:       i,
     name:             fields[0],
     gender:           fields[1],
-    avatar_url:       avatarUrl || "https://static.licdn.com/scds/common/u/images/themes/katy/ghosts/person/ghost_person_200x200_v1.png",
+    avatarUrl:        avatarUrl || "https://static.licdn.com/scds/common/u/images/themes/katy/ghosts/person/ghost_person_200x200_v1.png",
     publicProfileUrl: profileUrl,
   }
 })

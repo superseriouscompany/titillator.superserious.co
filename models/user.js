@@ -87,7 +87,7 @@ function findCoworkers(user, prepop) {
       }
     })
   }).then((coworkers) => {
-    if( !isEmployee(user) || true ) {
+    if( !isEmployee(user) ) {
       return coworkers
     }
 

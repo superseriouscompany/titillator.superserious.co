@@ -3,7 +3,7 @@ module.exports = {
 }
 
 function shouldFail(r) {
-  let err;
+  var err;
   if( r && r.statusCode ) {
     err = new Error(`Expected an unsuccessful response, got: ${r.statusCode} ${JSON.stringify(r.body)}`);
     err.statusCode = r.statusCode;

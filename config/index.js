@@ -1,7 +1,7 @@
 'use strict';
 const AWS         = require('aws-sdk');
 const secrets     = require('./secrets');
-let environment = process.env.NODE_ENV || 'development';
+var environment = process.env.NODE_ENV || 'development';
 
 module.exports = Object.assign({
   baseUrl:           'https://superserious.ngrok.io',

@@ -64,7 +64,7 @@ function findByAccessToken(accessToken) {
 }
 
 function findCoworkers(user, prepop) {
-  let positions = user.positions && user.positions.values
+  var positions = user.positions && user.positions.values
   positions = _.map((positions || []), 'company')
   return client.scan({
     TableName: tableName,

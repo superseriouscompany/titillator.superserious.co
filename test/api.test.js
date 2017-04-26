@@ -5,7 +5,7 @@ const factory = require('./factory')
 const h       = require('./helpers')
 
 describe('api', function() {
-  let serverHandle;
+  var serverHandle;
   this.slow(10000)
   this.timeout(20000)
 
@@ -71,7 +71,7 @@ describe('api', function() {
   });
 
   it("returns match count", function() {
-    let u1, u2;
+    var u1, u2;
 
     return Promise.all([
       factory.user(),
@@ -115,7 +115,7 @@ describe('api', function() {
   });
 
   it("returns no matches if your admirer is not in your top ten", function() {
-    let u1, u2;
+    var u1, u2;
 
     return Promise.all([
       factory.user(),
@@ -181,7 +181,7 @@ describe('api', function() {
   });
 
   it("returns proper count for multiple matches", function() {
-    let users;
+    var users;
 
     return Promise.all([
       factory.user(),

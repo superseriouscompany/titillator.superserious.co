@@ -67,4 +67,41 @@ describe('api', function() {
       expect(err.statusCode).toEqual(500)
     })
   });
+
+  it("returns match count", function() {
+    let u1, u2;
+
+    return Promise.all([
+      factory.user(),
+      factory.user()
+    ]).then((v) => {
+      u1 = v[0]
+      u2 = v[1]
+
+      return api.post('/rankings', {
+        headers: { 'X-Access-Token': u1.access_token },
+        body: {
+          ladder: [
+            [u2.id, 1, 0],
+          ]
+        }
+      })
+    }).then(() => {
+      return api.post('/rankings', {
+        headers: { 'X-Access-Token': u2.access_token },
+        body: {
+          ladder: [
+            [u1.id, 1, 0],
+          ]
+        }
+      })
+    }).then(() => {
+      return api.get('/matches', {
+        headers: { 'X-Access-Token': u1.access_token },
+      })
+    }).then((response) => {
+      expect(response.statusCode).toEqual(200)
+      expect(response.body.count).toEqual(1)
+    })
+  });
 })

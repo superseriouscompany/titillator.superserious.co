@@ -3,6 +3,7 @@ const tableName = require('../config').rankingsTableName
 
 module.exports = {
   create: create,
+  get: get,
 }
 
 function create(id, ladder) {
@@ -13,4 +14,13 @@ function create(id, ladder) {
       ladder: ladder,
     },
   }).then(() => { return true })
+}
+
+function get(id) {
+  return client.get({
+    TableName: tableName,
+    Key: {id: id}
+  }).then((payload) => {
+    return payload.Item
+  })
 }

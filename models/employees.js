@@ -91,7 +91,7 @@ const csv = [
   "Trystan Johnson,M,https://media.licdn.com/mpr/mpr/shrink_100_100/AAEAAQAAAAAAAASFAAAAJDI0NjNiMmVhLTMyN2MtNGUyNi04ZDA3LWIzNmQwMWU5NWZkZg.jpg,https://www.linkedin.com/in/trystanj/",
   "Melina Soto,F,https://media.licdn.com/mpr/mpr/shrink_100_100/AAEAAQAAAAAAAAzSAAAAJGM5YTFiOTg0LWJjNjEtNGZjMC05NmE5LThhMTJhYzcwMDI3MQ.jpg,https://www.linkedin.com/in/melina-j-soto-7206a784/",
   "Gareth Johnson,M,https://media.licdn.com/mpr/mpr/shrink_100_100/AAEAAQAAAAAAAAdTAAAAJDdmZTcyOGIxLTAxYmQtNDY3NS04OTkyLWZhZTc5NjliZTY5NQ.jpg,https://www.linkedin.com/in/garethjohnson/",
-  "Brian Haney,M,https://www.facebook.com/photo.php?fbid=1075204505831674&set=a.150046511680816.25445.100000264036169&type=3&theater,https://www.linkedin.com/in/brian-haney-68792b4a/",
+  "Brian Haney,M,https://scontent.fopo1-1.fna.fbcdn.net/v/t31.0-8/12307565_1075204505831674_6100642439715462838_o.jpg?oh=b14f6f29072be5a63c1428a91be98b89&oe=598C6C46,https://www.linkedin.com/in/brian-haney-68792b4a/",
   "Alex Segal,M,https://media.licdn.com/mpr/mpr/shrink_100_100/AAEAAQAAAAAAAAWoAAAAJDE0MzAyM2Y5LWU3NzgtNGMxYS05ZGNlLTBlZDMwNzEzMTZiMw.jpg,https://www.linkedin.com/in/alexthesomeone/",
   "Sean Rad,M,https://media.licdn.com/mpr/mpr/shrink_100_100/p/2/000/2be/296/1a5ca83.jpg,https://www.linkedin.com/in/seanrad/",
   "Jessica McCutcheon,F,https://media.licdn.com/mpr/mpr/shrink_100_100/AAEAAQAAAAAAAAdUAAAAJDk5NTE1ZjU0LTdmN2ItNDQ3MS04NDJjLTI1ZTVhODIwNTcxZA.jpg,https://www.linkedin.com/in/jessica-mccutcheon-58827640/",

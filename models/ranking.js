@@ -11,7 +11,9 @@ function create(id, ladder) {
     TableName: tableName,
     Item: {
       id: id,
-      ladder: ladder,
+      ladder: (ladder || []).sort((a, b) => {
+        return a[1] < b[1] ? 1 : -1
+      }),
     },
   }).then(() => { return true })
 }

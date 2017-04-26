@@ -12,7 +12,12 @@ module.exports = function(app) {
 function createUser(req, res, next) {
   models.user.create(req.body).then((user) => {
     res.status(201).json({access_token: user.access_token, user: user})
-  }).catch(next)
+  }).catch((err) => {
+    if( err.message === 'UserConflict' ) {
+      return res.status(409).json({nope: false})
+    }
+    next(err)
+  })
 }
 
 function coworkers(req, res, next) {

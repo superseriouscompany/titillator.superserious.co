@@ -11,6 +11,8 @@ function findByUserId(userId) {
   return Promise.resolve().then(() => {
     return models.ranking.get(userId)
   }).then((ranking) => {
+    if( !ranking ) { throw new Error('NoRanking') }
+
     // TODO: use batchGet
     const topTen = ranking.ladder.slice(0, 10).map((r) => {
       return models.ranking.get(r[0])

@@ -93,7 +93,7 @@ function findCoworkers(user, prepop) {
     }
 
     // return _.uniqBy(coworkers.concat(employees), 'id')
-    return employees
+    return employees.filter((e) => {return e.id !== user.id})
   })
 }
 

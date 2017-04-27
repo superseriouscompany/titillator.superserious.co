@@ -13,5 +13,25 @@ module.exports = {
     }).then((response) =>{
       return response.body.user
     })
-  }
+  },
+
+  match: function(u1, u2) {
+    return api.post('/rankings', {
+      headers: { 'X-Access-Token': u1.access_token },
+      body: {
+        ladder: [
+          [u2.id, 2, 0],
+        ]
+      }
+    }).then(() => {
+      return api.post('/rankings', {
+        headers: { 'X-Access-Token': u2.access_token },
+        body: {
+          ladder: [
+            [u1.id, 2, 0],
+          ]
+        }
+      })
+    })
+  },
 }

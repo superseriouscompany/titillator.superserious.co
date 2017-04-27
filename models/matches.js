@@ -11,18 +11,19 @@ module.exports = {
 }
 
 function reveal(userId) {
-  let match;
+  let match, revelations, matches;
 
   return Promise.resolve().then(() => {
+    return findByUserId(userId)
+  }).then((m) => {
+    matches = m;
     return models.ranking.get(userId)
   }).then((ranking) => {
     if( !ranking ) { throw new Error('NoRanking') }
-
-    const revelations = (ranking.revealed || [])
-
-    const matches = ranking.ladder.slice(0, 10).filter((l) => {
+    revelations = (ranking.revealed || [])
+    matches = matches.filter((m) => {
       for( var i = 0; i < revelations.length; i++ ) {
-        if( revelations[i] === l[0] ) {
+        if( revelations[i] === m.id ) {
           return false
         }
       }
@@ -30,16 +31,8 @@ function reveal(userId) {
     })
 
     if( !matches.length ) { throw new Error('NoMatch') }
-
     const match = matches[Math.floor(Math.random()*matches.length)];
-    const id = match[0]
-
-    if( process.env.NODE_ENV !== 'production' ) {
-      const match = employees.find((e) => { return e.id === id })
-      if( match ) return match
-    }
-
-    return models.user.get(id)
+    return match
   })
 }
 
@@ -50,7 +43,7 @@ function findByUserId(userId) {
   }).then((ranking) => {
     if( !ranking ) { throw new Error('NoRanking') }
 
-    revealed = ranking.revealed
+    revealed = ranking.revealed || []
     // TODO: use batchGet
     const topTen = ranking.ladder.slice(0, 10).map((r) => {
       return models.ranking.get(r[0])
@@ -67,6 +60,10 @@ function findByUserId(userId) {
   }).then((rankings) => {
     // TODO: use batchGet
     return Promise.all(rankings.map((r) => {
+      if( process.env.NODE_ENV !== 'production' ) {
+        const match = employees.find((e) => { return e.id === r.id })
+        if( match ) return match
+      }
       return models.user.get(r.id)
     }))
   }).then((users) => {

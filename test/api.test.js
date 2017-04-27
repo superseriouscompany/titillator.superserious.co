@@ -60,8 +60,6 @@ describe('api', function() {
     })
   });
 
-  it("actually gets matching coworkers :)")
-
   it("doesn't allow getting an access token for an existing user", function () {
     return factory.user({id: 'cool', publicProfileUrl: 'http://cool/nice'}).then(() => {
       return factory.user({id: 'nope', publicProfileUrl: 'http://cool/nice'})
@@ -80,23 +78,7 @@ describe('api', function() {
       u1 = v[0]
       u2 = v[1]
 
-      return api.post('/rankings', {
-        headers: { 'X-Access-Token': u1.access_token },
-        body: {
-          ladder: [
-            [u2.id, 1, 0],
-          ]
-        }
-      })
-    }).then(() => {
-      return api.post('/rankings', {
-        headers: { 'X-Access-Token': u2.access_token },
-        body: {
-          ladder: [
-            [u1.id, 1, 0],
-          ]
-        }
-      })
+      return factory.match(u1, u2)
     }).then(() => {
       return api.get('/matches', {
         headers: { 'X-Access-Token': u1.access_token },
@@ -128,16 +110,16 @@ describe('api', function() {
         headers: { 'X-Access-Token': u1.access_token },
         body: {
           ladder: [
-            [Math.random().toString(), 0, 1],
-            [Math.random().toString(), 0, 1],
-            [Math.random().toString(), 0, 1],
-            [Math.random().toString(), 0, 1],
-            [Math.random().toString(), 0, 1],
-            [Math.random().toString(), 0, 1],
-            [Math.random().toString(), 0, 1],
-            [Math.random().toString(), 0, 1],
-            [Math.random().toString(), 0, 1],
-            [Math.random().toString(), 0, 1],
+            [Math.random().toString(), 4, 1],
+            [Math.random().toString(), 4, 1],
+            [Math.random().toString(), 4, 1],
+            [Math.random().toString(), 3, 1],
+            [Math.random().toString(), 2, 1],
+            [Math.random().toString(), 1, 1],
+            [Math.random().toString(), 1, 1],
+            [Math.random().toString(), 1, 1],
+            [Math.random().toString(), 1, 1],
+            [Math.random().toString(), 1, 1],
             [u2.id, 0, 1],
           ]
         }
@@ -253,14 +235,7 @@ describe('api', function() {
       u1 = v[0]
       u2 = v[1]
 
-      return api.post('/rankings', {
-        headers: { 'X-Access-Token': u1.access_token },
-        body: {
-          ladder: [
-            [u2.id, 2, 0],
-          ]
-        }
-      })
+      return factory.match(u1, u2)
     }).then(() => {
       return api.post('/matches/reveal', {
         headers: { 'X-Access-Token': u1.access_token },
@@ -285,14 +260,7 @@ describe('api', function() {
       u1 = v[0]
       u2 = v[1]
 
-      return api.post('/rankings', {
-        headers: { 'X-Access-Token': u1.access_token },
-        body: {
-          ladder: [
-            [u2.id, 2, 0],
-          ]
-        }
-      })
+      return factory.match(u1, u2)
     }).then(() => {
       return api.post('/matches/reveal', {
         headers: { 'X-Access-Token': u1.access_token },
@@ -328,6 +296,33 @@ describe('api', function() {
             [u2.id, 3, 0],
             [u3.id, 2, 1],
             [u4.id, 1, 2],
+          ]
+        }
+      })
+    }).then(() => {
+      return api.post('/rankings', {
+        headers: { 'X-Access-Token': u2.access_token },
+        body: {
+          ladder: [
+            [u1.id, 3, 0],
+          ]
+        }
+      })
+    }).then(() => {
+      return api.post('/rankings', {
+        headers: { 'X-Access-Token': u3.access_token },
+        body: {
+          ladder: [
+            [u1.id, 3, 0],
+          ]
+        }
+      })
+    }).then(() => {
+      return api.post('/rankings', {
+        headers: { 'X-Access-Token': u4.access_token },
+        body: {
+          ladder: [
+            [u1.id, 3, 0],
           ]
         }
       })
@@ -384,23 +379,7 @@ describe('api', function() {
       u1 = v[0]
       u2 = v[1]
 
-      return api.post('/rankings', {
-        headers: { 'X-Access-Token': u1.access_token },
-        body: {
-          ladder: [
-            [u2.id, 2, 0],
-          ]
-        }
-      })
-    }).then(() => {
-      return api.post('/rankings', {
-        headers: { 'X-Access-Token': u2.access_token },
-        body: {
-          ladder: [
-            [u1.id, 2, 0],
-          ]
-        }
-      })
+      return factory.match(u1, u2)
     }).then(() => {
       return api.post('/matches/reveal', {
         headers: { 'X-Access-Token': u1.access_token },

@@ -11,7 +11,7 @@ module.exports = {
 }
 
 function reveal(userId) {
-  let match, revelations, matches;
+  var match, revelations, matches;
 
   return Promise.resolve().then(() => {
     return findByUserId(userId)
@@ -37,7 +37,7 @@ function reveal(userId) {
 }
 
 function findByUserId(userId) {
-  let revealed = [];
+  var revealed = [];
   return Promise.resolve().then(() => {
     return models.ranking.get(userId)
   }).then((ranking) => {

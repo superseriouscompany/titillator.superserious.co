@@ -24,18 +24,26 @@ function getMatches(req, res, next) {
 }
 
 function revealMatch(req, res, next) {
+  var match;
+
   return Promise.resolve().then(() => {
     return models.matches.reveal(req.userId)
-  }).then((match) => {
-    return models.payments.pay(999, req.body.stripe_token, req.body.email).then((cool) => {
-      res.json({match: match})
-    }).then(() => {
-      return models.ranking.markRevealed(req.userId, match.id)
-    })
+  }).then((m) => {
+    match = m
+    return models.ranking.markRevealed(req.userId, m.id)
+  }).then(() => {
+    return models.payments.pay(999, req.body.stripe_token, req.body.email)
+  }).then((cool) => {
+    res.json({match: match})
   }).catch((err) => {
     if( err.message === 'InvalidToken' ) {
       return res.status(400).json({
         error: 'Stripe token is invalid',
+      })
+    }
+    if( err.message === 'NoMatch' ) {
+      return res.status(410).json({
+        error: 'No more matches',
       })
     }
     next(err)

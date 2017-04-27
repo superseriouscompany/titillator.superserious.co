@@ -308,7 +308,7 @@ describe('api', function() {
 
   it("reveals multiple matches", function () {
     var u1, u2, u3, u4;
-    var matches;
+    var matches, responses = [];
 
     return Promise.all([
       factory.user(),
@@ -332,30 +332,33 @@ describe('api', function() {
         }
       })
     }).then(() => {
-      return Promise.all([
-        api.post('/matches/reveal', {
-          headers: { 'X-Access-Token': u1.access_token },
-          body: {
-            stripe_token: 'magic',
-          }
-        }),
-        api.post('/matches/reveal', {
-          headers: { 'X-Access-Token': u1.access_token },
-          body: {
-            stripe_token: 'magic',
-          }
-        }),
-        api.post('/matches/reveal', {
-          headers: { 'X-Access-Token': u1.access_token },
-          body: {
-            stripe_token: 'magic',
-          }
-        }),
-      ])
-    }).then((responses) => {
+      return api.post('/matches/reveal', {
+        headers: { 'X-Access-Token': u1.access_token },
+        body: {
+          stripe_token: 'magic',
+        }
+      })
+    }).then((response) => {
+      responses = responses.concat(response)
+      return api.post('/matches/reveal', {
+        headers: { 'X-Access-Token': u1.access_token },
+        body: {
+          stripe_token: 'magic',
+        }
+      })
+    }).then((response) => {
+      responses = responses.concat(response)
+      return api.post('/matches/reveal', {
+        headers: { 'X-Access-Token': u1.access_token },
+        body: {
+          stripe_token: 'magic',
+        }
+      })
+    }).then((response) => {
+      responses = responses.concat(response)
       const statuses = responses.map((r) => { return r.statusCode })
       const names = responses.map((r) => { return r.body.match.name }).sort((a, b) => {
-        return a < b ? 1 : -1
+        return a < b ? -1 : 1
       })
       expect(statuses).toEqual([200,200,200])
       expect(names).toEqual(['Alex','Barbara','Christina'])

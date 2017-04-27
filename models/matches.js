@@ -23,9 +23,12 @@ function reveal(userId) {
       if( match ) return match
     }
 
-    const revelations = (ranking.revelations || [])
+    console.log(JSON.stringify(ranking));
+
+    const revelations = (ranking.revealed || [])
 
     const matches = ranking.ladder.slice(0, 10).filter((l) => {
+
       for( var i = 0; i < revelations.length; i++ ) {
         if( revelations[i] === l[0] ) {
           return false

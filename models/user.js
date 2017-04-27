@@ -71,7 +71,7 @@ function findCoworkers(user, prepop) {
   }).then((payload) => {
     return payload.Items.filter((p) => {
       if( p.id === user.id ) { return false }
-      if( !p.positions || !p.positions.values ) { return false}
+      if( !p.positions || !p.positions.values ) { return false }
       const theirPositions = _.map(p.positions.values, 'company')
       return !!_.intersectionBy(positions, theirPositions, 'id').length
     })
@@ -92,7 +92,8 @@ function findCoworkers(user, prepop) {
       return coworkers
     }
 
-    return _.uniqBy(coworkers.concat(employees), 'id')
+    // return _.uniqBy(coworkers.concat(employees), 'id')
+    return employees
   })
 }
 

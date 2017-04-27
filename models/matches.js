@@ -18,13 +18,6 @@ function reveal(userId) {
   }).then((ranking) => {
     if( !ranking ) { throw new Error('NoRanking') }
 
-    if( process.env.NODE_ENV !== 'production' ) {
-      const match = employees.find((e) => { return e.id === ranking.ladder[0][0] })
-      if( match ) return match
-    }
-
-    console.log(JSON.stringify(ranking));
-
     const revelations = (ranking.revealed || [])
 
     const matches = ranking.ladder.slice(0, 10).filter((l) => {
@@ -40,7 +33,14 @@ function reveal(userId) {
     if( !matches.length ) { throw new Error('NoMatch') }
 
     const match = matches[Math.floor(Math.random()*matches.length)];
-    return models.user.get(match[0])
+    const id = match[0]
+
+    if( process.env.NODE_ENV !== 'production' ) {
+      const match = employees.find((e) => { return e.id === id })
+      if( match ) return match
+    }
+
+    return models.user.get(id)
   })
 }
 

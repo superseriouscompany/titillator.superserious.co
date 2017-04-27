@@ -12,7 +12,7 @@ module.exports = function(app) {
 }
 
 function getMatches(req, res, next) {
-  return res.json({count: 1})
+  return res.json({count: 4})
   models.matches.findByUserId(req.userId).then((matchIds) => {
     res.json({count: matchIds.length})
   }).catch((err) => {

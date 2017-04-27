@@ -6,6 +6,7 @@ const models = {
 
 module.exports = function(app) {
   app.get('/matches', auth, getMatches)
+  app.post('/matches/reveal', auth, revealMatch)
 }
 
 function getMatches(req, res, next) {
@@ -17,4 +18,10 @@ function getMatches(req, res, next) {
     }
     next(err)
   })
+}
+
+function revealMatch(req, res, next) {
+  models.matches.reveal(req.userId).then((match) => {
+    res.json({match: match})
+  }).catch(next)
 }

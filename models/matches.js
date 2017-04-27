@@ -5,6 +5,17 @@ const models = {
 
 module.exports = {
   findByUserId: findByUserId,
+  reveal:       reveal,
+}
+
+function reveal(userId) {
+  return Promise.resolve().then(() => {
+    return models.ranking.get(userId)
+  }).then((ranking) => {
+    if( !ranking ) { throw new Error('NoRanking') }
+
+    return models.user.get(ranking.ladder[0][0])
+  })
 }
 
 function findByUserId(userId) {

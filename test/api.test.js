@@ -242,4 +242,36 @@ describe('api', function() {
       })
     })
   })
+
+  it("allows you to pay to reveal a match", function () {
+    var u1, u2;
+
+    return Promise.all([
+      factory.user(),
+      factory.user({name: 'Sancho Panza'}),
+    ]).then((v) => {
+      u1 = v[0]
+      u2 = v[1]
+
+      return api.post('/rankings', {
+        headers: { 'X-Access-Token': u1.access_token },
+        body: {
+          ladder: [
+            [u2.id, 2, 0],
+          ]
+        }
+      })
+    }).then(() => {
+      return api.post('/matches/reveal', {
+        headers: { 'X-Access-Token': u1.access_token },
+        body: {
+          stripe_token: 'nope',
+        }
+      })
+    }).then((response) => {
+      expect(response.statusCode).toEqual(200)
+      expect(response.body.match).toExist()
+      expect(response.body.match.name).toEqual('Sancho Panza', `Expected ${JSON.stringify(response.body)} to contain Sancho Panza`)
+    })
+  });
 })

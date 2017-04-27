@@ -1,7 +1,8 @@
 const auth  = require('../middleware/auth')
 
 const models = {
-  matches: require('../models/matches'),
+  matches:  require('../models/matches'),
+  payments: require('../models/payments'),
 }
 
 module.exports = function(app) {
@@ -22,8 +23,16 @@ function getMatches(req, res, next) {
 }
 
 function revealMatch(req, res, next) {
-  console.log(req.body)
-  models.matches.reveal(req.userId).then((match) => {
+  models.payments.pay(999, req.body.stripe_token, req.body.email).then((cool) => {
+    return models.matches.reveal(req.userId)
+  }).then((match) => {
     res.json({match: match})
-  }).catch(next)
+  }).catch((err) => {
+    if( err.message === 'InvalidToken' ) {
+      return res.status(400).json({
+        error: 'Stripe token is invalid',
+      })
+    }
+    next(err)
+  })
 }

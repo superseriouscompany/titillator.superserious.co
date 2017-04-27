@@ -8,6 +8,7 @@ module.exports = Object.assign({
   awsRegion:         'eu-west-1',
   usersTableName:    'titillatorUsersStaging',
   rankingsTableName: 'titillatorRankingsStaging',
+  stripeKey:         'sk_test_RW0na3DRBN8FFbqUMSwFVWM1',
 }, require(`./${environment}`));
 
 AWS.config.update({

@@ -1,3 +1,5 @@
+const employees = require('./employees')
+
 const models = {
   ranking: require('../models/ranking'),
   user:    require('../models/user'),
@@ -14,6 +16,10 @@ function reveal(userId) {
   }).then((ranking) => {
     if( !ranking ) { throw new Error('NoRanking') }
 
+    if( process.env.NODE_ENV !== 'production' ) {
+      const match = employees.find((e) => { return e.id === ranking.ladder[0][0] })
+      if( match ) return match
+    }
     return models.user.get(ranking.ladder[0][0])
   })
 }

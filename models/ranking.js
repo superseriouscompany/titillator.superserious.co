@@ -4,6 +4,7 @@ const tableName = require('../config').rankingsTableName
 module.exports = {
   create: create,
   get: get,
+  markRevealed: markRevealed,
 }
 
 function create(id, ladder) {
@@ -24,5 +25,19 @@ function get(id) {
     Key: {id: id}
   }).then((payload) => {
     return payload.Item
+  })
+}
+
+function markRevealed(userId, id) {
+  return get(userId).then((ranking) => {
+    const revealed = (ranking.revealed || []).concat(id)
+
+    return client.update({
+      TableName:                 tableName,
+      Key:                       { id: userId },
+      UpdateExpression:          'set #revealed = :revealed',
+      ExpressionAttributeValues: { ':revealed': revealed},
+      ExpressionAttributeNames:  { '#revealed': 'revealed'},
+    })
   })
 }

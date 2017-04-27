@@ -11,6 +11,8 @@ module.exports = {
 }
 
 function reveal(userId) {
+  let match;
+
   return Promise.resolve().then(() => {
     return models.ranking.get(userId)
   }).then((ranking) => {
@@ -20,7 +22,22 @@ function reveal(userId) {
       const match = employees.find((e) => { return e.id === ranking.ladder[0][0] })
       if( match ) return match
     }
-    return models.user.get(ranking.ladder[0][0])
+
+    const revelations = (ranking.revelations || [])
+
+    const matches = ranking.ladder.slice(0, 10).filter((l) => {
+      for( var i = 0; i < revelations.length; i++ ) {
+        if( revelations[i] === l[0] ) {
+          return false
+        }
+      }
+      return true
+    })
+
+    if( !matches.length ) { throw new Error('NoMatch') }
+
+    const match = matches[Math.floor(Math.random()*matches.length)];
+    return models.user.get(match[0])
   })
 }
 

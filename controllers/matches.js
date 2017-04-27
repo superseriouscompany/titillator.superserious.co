@@ -3,6 +3,7 @@ const auth  = require('../middleware/auth')
 const models = {
   matches:  require('../models/matches'),
   payments: require('../models/payments'),
+  ranking:  require('../models/ranking'),
 }
 
 module.exports = function(app) {
@@ -23,10 +24,14 @@ function getMatches(req, res, next) {
 }
 
 function revealMatch(req, res, next) {
-  models.payments.pay(999, req.body.stripe_token, req.body.email).then((cool) => {
+  return Promise.resolve().then(() => {
     return models.matches.reveal(req.userId)
   }).then((match) => {
-    res.json({match: match})
+    return models.payments.pay(999, req.body.stripe_token, req.body.email).then((cool) => {
+      res.json({match: match})
+    }).then(() => {
+      return models.ranking.markRevealed(req.userId, match.id)
+    })
   }).catch((err) => {
     if( err.message === 'InvalidToken' ) {
       return res.status(400).json({

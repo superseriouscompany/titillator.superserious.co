@@ -305,4 +305,69 @@ describe('api', function() {
       expect(err.response.body.error).toMatch('token')
     })
   });
+
+  it("reveals multiple matches", function () {
+    var u1, u2, u3, u4;
+    var matches;
+
+    return Promise.all([
+      factory.user(),
+      factory.user({name: 'Alex'}),
+      factory.user({name: 'Barbara'}),
+      factory.user({name: 'Christina'}),
+    ]).then((v) => {
+      u1 = v[0]
+      u2 = v[1]
+      u3 = v[2]
+      u4 = v[3]
+
+      return api.post('/rankings', {
+        headers: { 'X-Access-Token': u1.access_token },
+        body: {
+          ladder: [
+            [u2.id, 3, 0],
+            [u3.id, 2, 1],
+            [u4.id, 1, 2],
+          ]
+        }
+      })
+    }).then(() => {
+      return Promise.all([
+        api.post('/matches/reveal', {
+          headers: { 'X-Access-Token': u1.access_token },
+          body: {
+            stripe_token: 'magic',
+          }
+        }),
+        api.post('/matches/reveal', {
+          headers: { 'X-Access-Token': u1.access_token },
+          body: {
+            stripe_token: 'magic',
+          }
+        }),
+        api.post('/matches/reveal', {
+          headers: { 'X-Access-Token': u1.access_token },
+          body: {
+            stripe_token: 'magic',
+          }
+        }),
+      ])
+    }).then((responses) => {
+      const statuses = responses.map((r) => { return r.statusCode })
+      const names = responses.map((r) => { return r.body.match.name }).sort((a, b) => {
+        return a < b ? 1 : -1
+      })
+      expect(statuses).toEqual([200,200,200])
+      expect(names).toEqual(['Alex','Barbara','Christina'])
+      return api.post('/matches/reveal', {
+        headers: { 'X-Access-Token': u1.access_token },
+        body: {
+          stripe_token: 'magic',
+        }
+      })
+    }).then(h.shouldFail).catch((err) => {
+      if( !err.statusCode ) { throw err; }
+      expect(err.statusCode).toEqual(410)
+    })
+  });
 })

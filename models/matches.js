@@ -21,7 +21,6 @@ function reveal(userId) {
     const revelations = (ranking.revealed || [])
 
     const matches = ranking.ladder.slice(0, 10).filter((l) => {
-
       for( var i = 0; i < revelations.length; i++ ) {
         if( revelations[i] === l[0] ) {
           return false
@@ -45,11 +44,13 @@ function reveal(userId) {
 }
 
 function findByUserId(userId) {
+  let revealed = [];
   return Promise.resolve().then(() => {
     return models.ranking.get(userId)
   }).then((ranking) => {
     if( !ranking ) { throw new Error('NoRanking') }
 
+    revealed = ranking.revealed
     // TODO: use batchGet
     const topTen = ranking.ladder.slice(0, 10).map((r) => {
       return models.ranking.get(r[0])
@@ -68,5 +69,10 @@ function findByUserId(userId) {
     return Promise.all(rankings.map((r) => {
       return models.user.get(r.id)
     }))
+  }).then((users) => {
+    return users.map((u) => {
+      u.revealed = !!revealed.find((id) => { return u.id === id })
+      return u
+    })
   })
 }

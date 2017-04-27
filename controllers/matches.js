@@ -12,9 +12,13 @@ module.exports = function(app) {
 }
 
 function getMatches(req, res, next) {
-  return res.json({count: 4})
-  models.matches.findByUserId(req.userId).then((matchIds) => {
-    res.json({count: matchIds.length})
+  models.matches.findByUserId(req.userId).then((users) => {
+    res.json({
+      count:    users.length,
+      revealed: users.filter((u) => {
+        return u.revealed
+      })
+    })
   }).catch((err) => {
     if( err.message === 'NoRanking' ) {
       return res.status(400).json({error: "No rankings submitted yet."})

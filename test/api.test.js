@@ -373,4 +373,48 @@ describe('api', function() {
       expect(err.statusCode).toEqual(410)
     })
   });
+
+  it("remembers matches you've revealed", function () {
+    var u1, u2;
+
+    return Promise.all([
+      factory.user(),
+      factory.user({name: 'Sancho Panza'}),
+    ]).then((v) => {
+      u1 = v[0]
+      u2 = v[1]
+
+      return api.post('/rankings', {
+        headers: { 'X-Access-Token': u1.access_token },
+        body: {
+          ladder: [
+            [u2.id, 2, 0],
+          ]
+        }
+      })
+    }).then(() => {
+      return api.post('/rankings', {
+        headers: { 'X-Access-Token': u2.access_token },
+        body: {
+          ladder: [
+            [u1.id, 2, 0],
+          ]
+        }
+      })
+    }).then(() => {
+      return api.post('/matches/reveal', {
+        headers: { 'X-Access-Token': u1.access_token },
+        body: {
+          stripe_token: 'magic',
+        }
+      })
+    }).then((response) => {
+      return api.get('/matches', {
+        headers: { 'X-Access-Token': u1.access_token },
+      })
+    }).then((response) => {
+      expect(response.body.revealed).toExist()
+      expect(response.body.revealed[0].name).toEqual('Sancho Panza', `Expected ${JSON.stringify(response.body)} to contain Sancho Panza`)
+    })
+  });
 })

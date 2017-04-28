@@ -54,18 +54,17 @@ function findByUserId(userId) {
       return models.ranking.get(r[0])
     })
 
+    // Get rankings of everyone in my top ten
     return Promise.all(topTen)
   }).then((othersRankings) => {
-    // Get rankings of everyone in my top ten
+    // Get rankings that have me in their top ten
     return othersRankings.filter((ranking) => {
       const ladder = ranking && ranking.ladder
       return !!(ladder || []).slice(0, 10).find((rung) => {
-        return rung[0] === userId
+        return rung[0] === userId && rung[1] >= 4
       })
     })
   }).then((rankings) => {
-    // Get rankings that have me in their top ten
-
     return Promise.all(rankings.map((r) => {
       if( process.env.NODE_ENV !== 'production' ) {
         const match = employees.find((e) => { return e.id === r.id })

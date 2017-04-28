@@ -187,7 +187,7 @@ const csv = [
   "Jason Ergina,M,https://media.licdn.com/mpr/mpr/shrink_100_100/AAEAAQAAAAAAAAYBAAAAJDBhNDliNjc2LTY2ZTgtNGU0OS1hNmJiLTZlMTA5MTBmYzBhYw.jpg,https://www.linkedin.com/in/jason-ergina-b4b853106/",
   "Jinyong Lee,M,https://media.licdn.com/mpr/mpr/shrink_100_100/p/3/000/1f1/2ee/17245d3.jpg,https://www.linkedin.com/in/jinyong-lee-2088b162/",
   "Akshata Ramesh,F,https://media.licdn.com/mpr/mpr/shrinknp_400_400/AAEAAQAAAAAAAAcTAAAAJDhkMGEwNzIwLTY5ZGYtNDZhZS1hN2NlLWU4NzZiMjk1ZmRjZA.jpg,https://www.linkedin.com/in/akshataramesh/",
-  "Kyle Bendickson,M,https://www.google.pt/url?sa=i&rct=j&q=&esrc=s&source=images&cd=&cad=rja&uact=8&ved=0ahUKEwiv2dj3i8DTAhWGOhoKHZxGCRQQjRwIBw&url=https%3A%2F%2Fwww.linkedin.com%2Fin%2Fkylebendickson&psig=AFQjCNFG6HMqVqAdhLjnl1ETevARb42Z3Q&ust=1493226388173958,https://www.linkedin.com/in/kylebendickson/",
+  "Kyle Bendickson,M,https://media.licdn.com/mpr/mpr/shrinknp_200_200/AAEAAQAAAAAAAAOpAAAAJDViZGE2MTZhLWViZmUtNGYzNi04ZmI1LTkwMDlkZDY5MDNkYQ.jpg,https://www.linkedin.com/in/kylebendickson/",
   "Abby Johnson,F,https://media.licdn.com/mpr/mpr/shrink_100_100/AAEAAQAAAAAAAA1BAAAAJDZiMTYxNjY1LWFlODYtNDhmYy1iZTFiLTA5YTZkOGIyMTZhZA.jpg,https://www.linkedin.com/in/johnsonabby/",
   "Craig P.,M,https://media.licdn.com/mpr/mpr/shrink_100_100/AAEAAQAAAAAAAAlNAAAAJGNmNjBiYmZmLTcwNTYtNGVlMS1hNjcwLWMyY2UwMTg2NDU1Ng.jpg,https://www.linkedin.com/in/craig-p-69ab4b115/",
   "Christopher Fuller,M,https://media.licdn.com/mpr/mpr/shrink_100_100/AAEAAQAAAAAAAAjHAAAAJGVmNzFkYmNlLWJlMDktNGFjMS1hODZmLWJjYzBlODU0ZGJhNQ.jpg,https://www.linkedin.com/in/in123/",
